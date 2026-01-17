@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>Výsledky přijímacího řízení 2025</title>
         <style>
-            /* DEFINICE BAREV PRO SVĚTLÝ REŽIM */
+            /* SVĚTLÝ REŽIM */
             :root {
                 --primary: #2563eb;
                 --primary-hover: #1d4ed8;
@@ -21,7 +21,7 @@
                 --priority-bg: #f8fafc;
             }
 
-            /* DEFINICE BAREV PRO TMAVÝ REŽIM */
+            /* TMAVÝ REŽIM */
             [data-theme="dark"] {
                 --bg: #0f172a;
                 --card-bg: #1e293b;
@@ -37,21 +37,24 @@
             * {
                 box-sizing: border-box;
                 transition:
-                    background-color 0.3s,
-                    color 0.3s,
-                    border-color 0.3s;
+                    background-color 0.25s,
+                    color 0.25s,
+                    border-color 0.25s;
             }
             body {
                 font-family:
-                    "Inter",
+                    Inter,
                     system-ui,
                     -apple-system,
+                    "Segoe UI",
+                    Roboto,
+                    Arial,
                     sans-serif;
-                background-color: var(--bg);
-                color: var(--text-main);
-                line-height: 1.5;
                 margin: 0;
                 padding: 24px;
+                background: var(--bg);
+                color: var(--text-main);
+                line-height: 1.5;
             }
 
             .container {
@@ -61,21 +64,25 @@
             }
 
             header {
-                margin-bottom: 24px;
                 text-align: center;
+                margin-bottom: 20px;
             }
             h1 {
-                font-size: 2rem;
+                margin: 0;
+                font-size: 1.9rem;
                 font-weight: 800;
-                margin-bottom: 4px;
                 color: var(--text-main);
             }
+            p.subtitle {
+                margin: 6px 0 0 0;
+                color: var(--text-muted);
+            }
 
-            /* THEME SWITCHER */
+            /* Theme toggle */
             .theme-toggle {
                 position: absolute;
-                top: 0;
-                right: 0;
+                top: 8px;
+                right: 8px;
                 background: var(--card-bg);
                 border: 1px solid var(--border);
                 color: var(--text-main);
@@ -83,260 +90,283 @@
                 border-radius: 8px;
                 cursor: pointer;
                 display: flex;
-                align-items: center;
                 gap: 8px;
-                font-size: 0.8rem;
+                align-items: center;
                 font-weight: 600;
-                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                font-size: 0.85rem;
             }
             .theme-toggle:hover {
-                background: var(--border);
+                filter: brightness(0.98);
             }
 
-            /* SIMULATOR CARD */
+            /* Simulator */
             .simulator-card {
                 background: var(--card-bg);
-                padding: 24px;
-                border-radius: 16px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-                margin-bottom: 32px;
-                border-top: 5px solid var(--primary);
-            }
-
-            .sim-title {
-                margin-top: 0;
-                margin-bottom: 20px;
-                font-size: 1.25rem;
-                display: flex;
-                align-items: center;
-                gap: 8px;
+                border-radius: 14px;
+                padding: 20px;
+                margin-bottom: 24px;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+                border-top: 4px solid var(--primary);
             }
 
             .simulator-grid {
                 display: grid;
                 grid-template-columns: 1fr 1.2fr;
-                gap: 40px;
+                gap: 28px;
+                align-items: start;
+            }
+            .sim-title {
+                font-size: 1.15rem;
+                margin: 0 0 12px 0;
+                display: flex;
+                align-items: center;
+                gap: 10px;
             }
 
             .input-section {
                 display: flex;
                 flex-direction: column;
-                gap: 12px;
+                gap: 10px;
             }
-
             .control-group {
                 display: flex;
                 flex-direction: column;
-                gap: 5px;
+                gap: 6px;
             }
             label {
                 font-size: 0.85rem;
-                font-weight: 600;
                 color: var(--text-muted);
+                font-weight: 700;
             }
 
             input[type="number"],
-            select,
-            input[type="text"] {
+            input[type="text"],
+            select {
                 padding: 10px 12px;
-                border: 1px solid var(--border);
                 border-radius: 8px;
-                font-size: 0.95rem;
-                width: 100%;
-                background-color: var(--input-bg);
-                color: var(--text-main);
-            }
-
-            .priority-list {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-            .priority-item {
-                background: var(--priority-bg);
-                padding: 12px 16px;
-                margin-bottom: 8px;
                 border: 1px solid var(--border);
-                border-radius: 10px;
-                cursor: grab;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                font-weight: 600;
-                user-select: none;
-            }
-            .priority-item::before {
-                content: "☰";
-                color: var(--text-muted);
-                font-size: 0.8rem;
-            }
-            .priority-item.dragging {
-                opacity: 0.4;
+                background: var(--input-bg);
+                color: var(--text-main);
+                font-size: 0.95rem;
             }
 
             #run-sim {
+                margin-top: 6px;
+                padding: 12px;
+                border-radius: 8px;
                 background: var(--primary);
                 color: white;
                 border: none;
-                padding: 14px;
-                border-radius: 8px;
                 font-weight: 700;
                 cursor: pointer;
-                margin-top: 10px;
             }
             #run-sim:hover {
                 background: var(--primary-hover);
             }
 
-            .sim-result {
-                margin-top: 20px;
-                padding: 16px;
+            .priority-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: block;
+            }
+            .priority-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 12px;
                 border-radius: 10px;
+                border: 1px solid var(--border);
+                background: var(--priority-bg);
+                margin-bottom: 8px;
                 font-weight: 700;
-                text-align: center;
-                display: none;
-                border: 1px solid transparent;
+                cursor: grab;
+                user-select: none;
+            }
+            .priority-item.dragging {
+                opacity: 0.45;
             }
 
-            /* STATS & TABLE */
+            .sim-result {
+                margin-top: 12px;
+                padding: 14px;
+                border-radius: 10px;
+                display: none;
+                font-weight: 800;
+                text-align: center;
+            }
+
+            /* Controls and stats */
             .controls-card {
                 background: var(--card-bg);
-                padding: 20px;
                 border-radius: 12px;
-                margin-bottom: 20px;
+                padding: 16px;
+                margin-bottom: 18px;
                 display: flex;
+                gap: 12px;
+                align-items: center;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
                 flex-wrap: wrap;
-                gap: 15px;
-                align-items: flex-end;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             }
 
             .stats-bar {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 16px;
-                margin-bottom: 24px;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 12px;
+                margin-bottom: 18px;
             }
             .stat-card {
                 background: var(--card-bg);
-                padding: 16px;
-                border-radius: 12px;
+                padding: 12px;
+                border-radius: 10px;
                 border-left: 4px solid var(--primary);
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
             }
             .stat-label {
-                font-size: 0.7rem;
+                font-size: 0.8rem;
                 color: var(--text-muted);
-                text-transform: uppercase;
                 font-weight: 700;
+                text-transform: uppercase;
             }
             .stat-value {
-                font-size: 1.4rem;
+                font-size: 1.2rem;
                 font-weight: 800;
-                margin-top: 4px;
+                margin-top: 6px;
             }
 
+            /* Table */
             .table-wrapper {
                 background: var(--card-bg);
                 border-radius: 12px;
                 overflow-x: auto;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
                 border: 1px solid var(--border);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+                padding: 6px;
             }
+
             table {
                 width: 100%;
                 border-collapse: collapse;
-                font-size: 0.9rem;
             }
             thead th {
                 background: var(--table-header);
-                padding: 12px 16px;
+                padding: 10px 12px;
                 text-align: left;
                 border-bottom: 2px solid var(--border);
-                cursor: pointer;
+                font-weight: 700;
                 white-space: nowrap;
                 color: var(--text-main);
             }
             tbody td {
-                padding: 12px 16px;
+                padding: 10px 12px;
                 border-bottom: 1px solid var(--border);
                 color: var(--text-main);
             }
             tbody tr:hover {
-                background-color: var(--table-header);
+                background: var(--table-header);
             }
 
-            @media (max-width: 768px) {
+            @media (max-width: 820px) {
                 .simulator-grid {
                     grid-template-columns: 1fr;
                 }
                 .theme-toggle {
-                    top: -45px;
+                    top: -48px;
+                    right: 8px;
+                    position: relative;
+                    margin-bottom: 8px;
                 }
             }
         </style>
     </head>
     <body>
         <div class="container">
-            <button class="theme-toggle" id="theme-toggle">
+            <button
+                id="theme-toggle"
+                class="theme-toggle"
+                aria-label="Toggle theme"
+            >
                 <span id="theme-icon">🌙</span>
                 <span id="theme-text">Tmavý režim</span>
             </button>
 
             <header>
                 <h1>Přijímací řízení 2025</h1>
-                <p style="color: var(--text-muted)">
-                    Analýza výsledků a simulátor přijetí
-                </p>
+                <p class="subtitle">Analýza výsledků a simulátor přijetí</p>
             </header>
 
-            <!-- 1. SIMULÁTOR -->
-            <div class="simulator-card">
-                <h2 class="sim-title">🚀 Simulátor: Dostanu se tam?</h2>
+            <!-- SIMULATOR -->
+            <section class="simulator-card" aria-labelledby="sim-title">
+                <h2 id="sim-title" class="sim-title">
+                    🚀 Simulátor: Dostanu se tam?
+                </h2>
                 <div class="simulator-grid">
-                    <div class="input-section">
+                    <div class="input-section" aria-label="Simulátor vstupy">
                         <div class="control-group">
-                            <label>Body z Matematiky</label>
+                            <label for="sim-ma">Body z matematiky</label>
                             <input
-                                type="number"
                                 id="sim-ma"
-                                value="35"
-                                min="0"
-                                max="50"
-                            />
-                        </div>
-                        <div class="control-group">
-                            <label>Body z Českého jazyka</label>
-                            <input
                                 type="number"
-                                id="sim-cj"
-                                value="40"
                                 min="0"
                                 max="50"
+                                value="30"
                             />
                         </div>
                         <div class="control-group">
-                            <label
-                                >Body za prospěch / soutěže (Gymnázium)</label
+                            <label for="sim-cj">Body z českého jazyka</label>
+                            <input
+                                id="sim-cj"
+                                type="number"
+                                min="0"
+                                max="50"
+                                value="30"
+                            />
+                        </div>
+                        <div class="control-group">
+                            <label for="sim-bonus"
+                                >Body za prospěch / soutěže (gymnázium)</label
                             >
                             <input
-                                type="number"
                                 id="sim-bonus"
-                                value="20"
+                                type="number"
                                 min="0"
                                 max="50"
+                                value="16"
                             />
                         </div>
+
                         <button id="run-sim">VYHODNOTIT ŠANCE</button>
-                        <div id="sim-result" class="sim-result"></div>
+                        <div
+                            id="sim-result"
+                            class="sim-result"
+                            role="status"
+                            aria-live="polite"
+                        ></div>
                     </div>
 
-                    <div class="priority-section">
-                        <label style="display: block; margin-bottom: 10px"
-                            >Seřaďte si školy podle priority
-                            (přetažením):</label
+                    <div class="priority-section" aria-label="Pořadí škol">
+                        <label
+                            style="
+                                display: block;
+                                margin-bottom: 8px;
+                                font-weight: 700;
+                                color: var(--text-muted);
+                            "
+                            >Seřaďte školy podle priority (přetažením)</label
                         >
-                        <ul class="priority-list" id="priority-list">
+                        <ul
+                            id="priority-list"
+                            class="priority-list"
+                            aria-describedby="priority-help"
+                        >
+                            <!-- Gymnázium moved to first place as requested -->
+                            <li
+                                class="priority-item"
+                                draggable="true"
+                                data-file="gymnaium_2025.json"
+                            >
+                                4leté gymnázium
+                            </li>
                             <li
                                 class="priority-item"
                                 draggable="true"
@@ -351,23 +381,27 @@
                             >
                                 Informační technologie
                             </li>
-                            <li
-                                class="priority-item"
-                                draggable="true"
-                                data-file="gymnaium_2025.json"
-                            >
-                                4leté gymnázium
-                            </li>
                         </ul>
+                        <p
+                            id="priority-help"
+                            style="
+                                margin-top: 8px;
+                                color: var(--text-muted);
+                                font-size: 0.9rem;
+                            "
+                        >
+                            Pořadí se použije při simulaci: skript projde školy
+                            od nejvyšší priority dolů.
+                        </p>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- 2. FILTRY -->
-            <div class="controls-card">
+            <!-- CONTROLS -->
+            <section class="controls-card" aria-label="Filtry">
                 <div class="control-group">
-                    <label>Tabulka oboru:</label>
-                    <select id="dataset" style="width: 200px">
+                    <label for="dataset">Tabulka oboru</label>
+                    <select id="dataset" style="min-width: 180px">
                         <option value="lycemoum_2025.json">
                             Technické lyceum
                         </option>
@@ -379,60 +413,70 @@
                         </option>
                     </select>
                 </div>
+
                 <div class="control-group">
-                    <label>Filtr:</label>
-                    <select id="status-filter">
+                    <label for="status-filter">Filtr</label>
+                    <select id="status-filter" style="min-width: 160px">
                         <option value="all">Všechny výsledky</option>
                         <option value="accepted">Jen přijatí</option>
                         <option value="rejected">Jen nepřijatí</option>
                     </select>
                 </div>
-                <div class="control-group">
-                    <label>Hledat:</label>
+
+                <div class="control-group" style="flex: 1; min-width: 200px">
+                    <label for="search">Hledat</label>
                     <input
                         id="search"
                         type="text"
                         placeholder="Reg. číslo..."
-                        style="width: 180px"
                     />
                 </div>
-                <label
-                    style="
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                        padding-bottom: 10px;
-                    "
-                >
-                    <input type="checkbox" id="exclude-priority" />
-                    <span style="font-size: 0.85rem">Skrýt přijaté jinde</span>
-                </label>
-            </div>
 
-            <div class="stats-bar">
+                <div style="display: flex; align-items: center; gap: 8px">
+                    <label
+                        style="
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                        "
+                    >
+                        <input id="exclude-priority" type="checkbox" />
+                        <span
+                            style="font-size: 0.9rem; color: var(--text-muted)"
+                            >Skrýt přijaté jinde</span
+                        >
+                    </label>
+                </div>
+            </section>
+
+            <!-- STATS -->
+            <section class="stats-bar" aria-label="Statistiky">
                 <div class="stat-card">
                     <div class="stat-label">Zobrazeno / Celkem</div>
-                    <div class="stat-value" id="count">0 / 0</div>
+                    <div id="count" class="stat-value">0 / 0</div>
                 </div>
                 <div
                     class="stat-card"
                     style="border-left-color: var(--success)"
                 >
                     <div class="stat-label">Prahové body</div>
-                    <div class="stat-value" id="summary-threshold">-</div>
+                    <div id="summary-threshold" class="stat-value">-</div>
                 </div>
                 <div class="stat-card" style="border-left-color: var(--error)">
                     <div class="stat-label">Nad prahem, nepřijati</div>
-                    <div class="stat-value" id="summary-rejected">-</div>
+                    <div id="summary-rejected" class="stat-value">-</div>
                 </div>
-            </div>
+            </section>
 
-            <div class="table-wrapper"><div id="table-container"></div></div>
+            <!-- TABLE -->
+            <div class="table-wrapper" id="table-wrapper" aria-live="polite">
+                <div id="table-container"></div>
+            </div>
         </div>
 
         <script>
-            // DARK MODE LOGIC
+            // Theme toggle
             const themeToggle = document.getElementById("theme-toggle");
             const themeIcon = document.getElementById("theme-icon");
             const themeText = document.getElementById("theme-text");
@@ -454,15 +498,13 @@
                 setTheme(!isDark);
             });
 
-            // Init theme
-            const savedTheme =
-                localStorage.getItem("theme") ||
-                (window.matchMedia("(prefers-color-scheme: dark)").matches
-                    ? "dark"
-                    : "light");
-            setTheme(savedTheme === "dark");
+            const saved = localStorage.getItem("theme");
+            const prefersDark =
+                window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches;
+            setTheme(saved ? saved === "dark" : prefersDark);
 
-            // APP LOGIC
+            // App state
             let state = {
                 header: [],
                 rows: [],
@@ -478,150 +520,107 @@
             async function loadData(file) {
                 if (cache[file]) return cache[file];
                 const res = await fetch(file);
+                if (!res.ok) throw new Error("Chyba při načítání " + file);
                 const json = await res.json();
                 const rawRows =
-                    json.rows || (json.sheets && json.sheets[0].rows);
-                const header = rawRows[0];
+                    json.rows ||
+                    (json.sheets && json.sheets[0] && json.sheets[0].rows);
+                if (!rawRows || rawRows.length === 0)
+                    return { header: [], rows: [] };
+                const header = rawRows[0].map((h) => String(h));
                 const rows = rawRows.slice(1).map((r) => {
                     const obj = {};
-                    header.forEach((h, i) => (obj[h] = r[i]));
+                    header.forEach(
+                        (h, i) => (obj[h] = r[i] !== undefined ? r[i] : ""),
+                    );
                     const totalIdx = header.findIndex((h) =>
                         /celkem|celk/i.test(h),
                     );
-                    obj._total = parseFloat(
-                        String(r[totalIdx] || 0).replace(",", "."),
-                    );
+                    obj._total =
+                        totalIdx >= 0
+                            ? parseFloat(
+                                  String(r[totalIdx] || "").replace(",", "."),
+                              )
+                            : NaN;
                     const accIdx = header.findIndex((h) =>
                         /při[j]?at|výsledek/i.test(h),
                     );
-                    let val = String(r[accIdx] || "").toLowerCase();
-                    obj._accepted =
-                        (val.includes("přijat") && !val.includes("nepřijat")) ||
-                        val === "ano";
-                    if (!obj._accepted && val === "") {
-                        // fallback scan
-                        obj._accepted = r.some((c) => {
-                            let s = String(c).toLowerCase();
-                            return (
-                                (s.includes("přijat") &&
-                                    !s.includes("nepřijat")) ||
-                                s === "ano"
-                            );
-                        });
+                    let val =
+                        accIdx >= 0
+                            ? String(r[accIdx] || "").toLowerCase()
+                            : "";
+                    let accepted = null;
+                    if (val) {
+                        if (
+                            val.includes("nepřijat") ||
+                            val.includes("neprijat") ||
+                            val === "ne"
+                        )
+                            accepted = false;
+                        else if (
+                            val.includes("přijat") ||
+                            val.includes("prijat") ||
+                            val === "ano"
+                        )
+                            accepted = true;
                     }
-                    obj._joined = Object.values(obj).join(" ").toLowerCase();
+                    if (accepted === null) {
+                        for (const cell of r) {
+                            const s = String(cell || "").toLowerCase();
+                            if (
+                                s.includes("nepřijat") ||
+                                s.includes("neprijat") ||
+                                s === "ne"
+                            ) {
+                                accepted = false;
+                                break;
+                            }
+                            if (
+                                s.includes("přijat") ||
+                                s.includes("prijat") ||
+                                s === "ano"
+                            ) {
+                                accepted = true;
+                                break;
+                            }
+                        }
+                    }
+                    obj._accepted = !!accepted;
+                    obj._joined = Object.values(obj)
+                        .map((x) => String(x))
+                        .join(" ")
+                        .toLowerCase();
                     return obj;
                 });
                 cache[file] = { header, rows };
                 return cache[file];
             }
 
-            async function runSim() {
-                const ma =
-                    parseFloat(document.getElementById("sim-ma").value) || 0;
-                const cj =
-                    parseFloat(document.getElementById("sim-cj").value) || 0;
-                const bonus =
-                    parseFloat(document.getElementById("sim-bonus").value) || 0;
-                const resultEl = document.getElementById("sim-result");
-                resultEl.style.display = "block";
-                resultEl.innerHTML = "🔄 Počítám...";
-
-                const priorities = [
-                    ...document.querySelectorAll(".priority-item"),
-                ];
-                let acceptedAt = null;
-                for (const item of priorities) {
-                    const data = await loadData(item.dataset.file);
-                    let myScore =
-                        ma +
-                        cj +
-                        (item.dataset.file.includes("gymnaium") ? bonus : 0);
-                    const accScores = data.rows
-                        .filter((r) => r._accepted)
-                        .map((r) => r._total);
-                    if (accScores.length && myScore >= Math.min(...accScores)) {
-                        acceptedAt = item.textContent;
-                        break;
-                    }
-                }
-                resultEl.style.background = acceptedAt ? "#d1fae5" : "#fee2e2";
-                resultEl.style.color = acceptedAt ? "#065f46" : "#991b1b";
-                resultEl.innerHTML = acceptedAt
-                    ? `✅ Byl byste PŘIJAT na: ${acceptedAt}`
-                    : `❌ Letos byste se pravděpodobně nedostal nikam.`;
-            }
-
-            // DRAG & DROP
-            const list = document.getElementById("priority-list");
-            list.addEventListener("dragstart", (e) =>
-                e.target.classList.add("dragging"),
-            );
-            list.addEventListener("dragend", (e) =>
-                e.target.classList.remove("dragging"),
-            );
-            list.addEventListener("dragover", (e) => {
-                e.preventDefault();
-                const dragging = document.querySelector(".dragging");
-                const after = [
-                    ...list.querySelectorAll(".priority-item:not(.dragging)"),
-                ].find(
-                    (it) =>
-                        e.clientY <
-                        it.getBoundingClientRect().top +
-                            it.getBoundingClientRect().height / 2,
-                );
-                after
-                    ? list.insertBefore(dragging, after)
-                    : list.appendChild(dragging);
-            });
-
-            function render() {
-                state.filtered = state.rows.filter((r) => {
-                    if (
-                        state.searchQuery &&
-                        !r._joined.includes(state.searchQuery)
-                    )
-                        return false;
-                    if (
-                        state.excludePriorityAccepted &&
-                        r._joined.includes("priorit")
-                    )
-                        return false;
-                    if (state.statusFilter === "accepted") return r._accepted;
-                    if (state.statusFilter === "rejected") return !r._accepted;
-                    return true;
-                });
+            function renderTable() {
                 const container = document.getElementById("table-container");
                 container.innerHTML = "";
+
+                if (!state.header || state.header.length === 0) {
+                    container.textContent = "Žádná data";
+                    return;
+                }
+
                 const table = document.createElement("table");
                 const thead = document.createElement("thead");
-                const tr = document.createElement("tr");
+                const thr = document.createElement("tr");
                 state.header.forEach((h, i) => {
                     const th = document.createElement("th");
                     th.textContent = h;
-                    th.onclick = () => {
-                        state.sortDir =
-                            state.sortCol === i ? -state.sortDir : 1;
-                        state.sortCol = i;
-                        state.filtered.sort((a, b) => {
-                            let vA = a[h],
-                                vB = b[h],
-                                nA = parseFloat(vA),
-                                nB = parseFloat(vB);
-                            return (
-                                (!isNaN(nA) && !isNaN(nB)
-                                    ? nA - nB
-                                    : String(vA).localeCompare(String(vB))) *
-                                state.sortDir
-                            );
-                        });
-                        render();
-                    };
-                    tr.appendChild(th);
+                    th.addEventListener("click", () => onSort(i));
+                    if (i === state.sortCol)
+                        th.classList.add(
+                            state.sortDir > 0 ? "sort-asc" : "sort-desc",
+                        );
+                    thr.appendChild(th);
                 });
-                thead.appendChild(tr);
+                thead.appendChild(thr);
                 table.appendChild(thead);
+
                 const tbody = document.createElement("tbody");
                 state.filtered.forEach((r) => {
                     const tr = document.createElement("tr");
@@ -634,45 +633,211 @@
                 });
                 table.appendChild(tbody);
                 container.appendChild(table);
+
                 document.getElementById("count").textContent =
                     `${state.filtered.length} / ${state.rows.length}`;
-                const acc = state.filtered.filter((r) => r._accepted);
-                const thresh = acc.length
-                    ? Math.min(...acc.map((r) => r._total))
-                    : "-";
-                document.getElementById("summary-threshold").textContent =
-                    thresh + (thresh !== "-" ? " b." : "");
-                document.getElementById("summary-rejected").textContent =
-                    thresh !== "-"
-                        ? state.filtered.filter(
-                              (r) => !r._accepted && r._total >= thresh,
-                          ).length
-                        : "-";
+                const withTotal = state.filtered.filter(
+                    (r) => !isNaN(r._total),
+                );
+                if (withTotal.length === 0) {
+                    document.getElementById("summary-threshold").textContent =
+                        "-";
+                    document.getElementById("summary-rejected").textContent =
+                        "-";
+                } else {
+                    const accepted = withTotal.filter((r) => r._accepted);
+                    if (accepted.length === 0) {
+                        document.getElementById(
+                            "summary-threshold",
+                        ).textContent = "N/A";
+                        document.getElementById(
+                            "summary-rejected",
+                        ).textContent = "0";
+                    } else {
+                        const threshold = Math.min(
+                            ...accepted.map((r) => r._total),
+                        );
+                        const rejectedAbove = withTotal.filter(
+                            (r) => !r._accepted && r._total >= threshold,
+                        ).length;
+                        document.getElementById(
+                            "summary-threshold",
+                        ).textContent = threshold + " b.";
+                        document.getElementById(
+                            "summary-rejected",
+                        ).textContent = rejectedAbove;
+                    }
+                }
             }
 
-            async function init(file) {
-                const data = await loadData(file);
-                state.header = data.header;
-                state.rows = data.rows;
-                render();
+            function applyFiltersAndRender() {
+                const q = state.searchQuery
+                    ? state.searchQuery.toLowerCase()
+                    : "";
+                state.filtered = state.rows.filter((r) => {
+                    if (q && !r._joined.includes(q)) return false;
+                    if (
+                        state.excludePriorityAccepted &&
+                        r._joined.includes("priorit")
+                    )
+                        return false;
+                    if (state.statusFilter === "accepted") return r._accepted;
+                    if (state.statusFilter === "rejected") return !r._accepted;
+                    return true;
+                });
+                if (state.sortCol >= 0) onSort(state.sortCol, false);
+                renderTable();
             }
 
-            document.getElementById("dataset").onchange = (e) =>
-                init(e.target.value);
-            document.getElementById("search").oninput = (e) => {
-                state.searchQuery = e.target.value.toLowerCase();
-                render();
-            };
-            document.getElementById("status-filter").onchange = (e) => {
-                state.statusFilter = e.target.value;
-                render();
-            };
-            document.getElementById("exclude-priority").onchange = (e) => {
-                state.excludePriorityAccepted = e.target.checked;
-                render();
-            };
-            document.getElementById("run-sim").onclick = runSim;
-            init("lycemoum_2025.json");
+            function onSort(col, rerender = true) {
+                if (state.sortCol === col) state.sortDir = -state.sortDir;
+                else {
+                    state.sortCol = col;
+                    state.sortDir = 1;
+                }
+                const h = state.header[col];
+                state.filtered.sort((a, b) => {
+                    const va = a[h],
+                        vb = b[h];
+                    const na = parseFloat(String(va).replace(",", ".")),
+                        nb = parseFloat(String(vb).replace(",", "."));
+                    if (!isNaN(na) && !isNaN(nb))
+                        return (na - nb) * state.sortDir;
+                    return (
+                        String(va).localeCompare(String(vb), "cs") *
+                        state.sortDir
+                    );
+                });
+                if (rerender) renderTable();
+            }
+
+            // Drag & drop for priorities
+            const list = document.getElementById("priority-list");
+            let dragging = null;
+            list.addEventListener("dragstart", (e) => {
+                dragging = e.target;
+                e.target.classList.add("dragging");
+            });
+            list.addEventListener("dragend", (e) => {
+                if (e.target) e.target.classList.remove("dragging");
+                dragging = null;
+            });
+            list.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                const after = [
+                    ...list.querySelectorAll(".priority-item:not(.dragging)"),
+                ].find(
+                    (el) =>
+                        e.clientY <
+                        el.getBoundingClientRect().top +
+                            el.getBoundingClientRect().height / 2,
+                );
+                if (!dragging) return;
+                if (after) list.insertBefore(dragging, after);
+                else list.appendChild(dragging);
+            });
+
+            // Simulation
+            async function runSim() {
+                const ma =
+                    parseFloat(document.getElementById("sim-ma").value) || 0;
+                const cj =
+                    parseFloat(document.getElementById("sim-cj").value) || 0;
+                const bonus =
+                    parseFloat(document.getElementById("sim-bonus").value) || 0;
+                const resultEl = document.getElementById("sim-result");
+                resultEl.style.display = "block";
+                resultEl.textContent = "🔄 Počítám...";
+
+                const items = [...document.querySelectorAll(".priority-item")];
+                let acceptedAt = null;
+
+                for (const it of items) {
+                    const file = it.dataset.file;
+                    try {
+                        const data = await loadData(file);
+                        // compute user score: math + cz, plus bonus for gymnázium
+                        let myScore = ma + cj;
+                        if (file.includes("gymnaium")) myScore += bonus;
+                        const accepted = data.rows.filter((r) => r._accepted);
+                        const threshold = accepted.length
+                            ? Math.min(...accepted.map((r) => r._total))
+                            : NaN;
+                        if (!isNaN(threshold) && myScore >= threshold) {
+                            acceptedAt = it.textContent;
+                            break;
+                        }
+                    } catch (err) {
+                        // ignore error for a single dataset, continue
+                        console.error("Chyba při načítání datasetu", file, err);
+                    }
+                }
+
+                if (acceptedAt) {
+                    resultEl.style.background = "#d1fae5";
+                    resultEl.style.color = "#065f46";
+                    resultEl.textContent =
+                        "✅ Byl byste PŘIJAT na: " + acceptedAt;
+                } else {
+                    resultEl.style.background = "#fee2e2";
+                    resultEl.style.color = "#991b1b";
+                    resultEl.textContent =
+                        "❌ S těmito body byste se letos pravděpodobně nedostal nikam.";
+                }
+            }
+
+            // Wiring UI
+            document
+                .getElementById("run-sim")
+                .addEventListener("click", runSim);
+
+            document
+                .getElementById("dataset")
+                .addEventListener("change", async (e) => {
+                    try {
+                        const data = await loadData(e.target.value);
+                        state.header = data.header;
+                        state.rows = data.rows;
+                        applyFiltersAndRender();
+                    } catch (err) {
+                        document.getElementById("table-container").textContent =
+                            "Chyba: " + err.message;
+                    }
+                });
+
+            document.getElementById("search").addEventListener("input", (e) => {
+                state.searchQuery = e.target.value;
+                applyFiltersAndRender();
+            });
+
+            document
+                .getElementById("status-filter")
+                .addEventListener("change", (e) => {
+                    state.statusFilter = e.target.value;
+                    applyFiltersAndRender();
+                });
+
+            document
+                .getElementById("exclude-priority")
+                .addEventListener("change", (e) => {
+                    state.excludePriorityAccepted = e.target.checked;
+                    applyFiltersAndRender();
+                });
+
+            // Initialize with default dataset
+            (async function init() {
+                try {
+                    const data = await loadData(
+                        document.getElementById("dataset").value,
+                    );
+                    state.header = data.header;
+                    state.rows = data.rows;
+                    applyFiltersAndRender();
+                } catch (err) {
+                    document.getElementById("table-container").textContent =
+                        "Chyba: " + err.message;
+                }
+            })();
         </script>
     </body>
 </html>
